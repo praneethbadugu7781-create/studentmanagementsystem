@@ -7,7 +7,6 @@ env/
 venv/
 .venv/
 ENV/
-*.sqlite3
 .DS_Store
 *.log
-staticfiles/
+.vercel/

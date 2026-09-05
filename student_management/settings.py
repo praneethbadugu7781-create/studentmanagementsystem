@@ -1,6 +1,6 @@
 """
 Django settings for student_management project.
-Production-ready configuration supporting Render, Vercel, PythonAnywhere, Railway.
+Production-ready configuration supporting Vercel, Render, PythonAnywhere, Railway.
 """
 
 import os
@@ -18,9 +18,9 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 't')
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't')
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.vercel.app',
@@ -74,16 +74,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'student_management.wsgi.application'
 
-# Database configuration (with serverless /tmp fallback for Vercel)
+# Database configuration (supports local, cloud, and serverless /tmp on Vercel)
 if os.environ.get('VERCEL'):
-    tmp_db = Path('/tmp/db.sqlite3')
-    base_db = BASE_DIR / 'db.sqlite3'
-    if not tmp_db.exists() and base_db.exists():
-        try:
-            shutil.copyfile(base_db, tmp_db)
-        except Exception:
-            pass
-    DB_PATH = tmp_db
+    DB_PATH = Path('/tmp/db.sqlite3')
 else:
     DB_PATH = BASE_DIR / 'db.sqlite3'
 
@@ -126,8 +119,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Enable WhiteNoise compression and caching
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WhiteNoise storage configuration
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Messages tag mapping for Bootstrap 5
 MESSAGE_TAGS = {

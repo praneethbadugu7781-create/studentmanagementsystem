@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard • Student Management System{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Overview of student records • Django & SQLite{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column gap-4">
+    <!-- Hero Banner (Matching Slide 8 Preview Screen) -->
+    <div class="hero-banner-card">
+        <div class="hero-banner-content">
+            <h2>Student Management System</h2>
+            <p>Manage student records quickly using Django and SQLite</p>
+        </div>
+        <div>
+            <a href="{% url 'students:student_add' %}" class="hero-add-btn">
+                <i class="bi bi-plus-circle-fill"></i>
+                <span>+ Add Student</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 4 Statistics Cards -->
+    <div class="row g-3">
+        <!-- Card 1: Total Students -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-title">Total Students</span>
+                    <h2 class="stat-value stat-count-up" data-target="{{ total_students }}">{{ total_students }}</h2>
+                </div>
+                <div class="stat-icon-wrapper stat-icon-primary">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Degree Courses -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-title">Courses</span>
+                    <h2 class="stat-value stat-count-up" data-target="{{ courses_count }}">{{ courses_count }}</h2>
+                </div>
+                <div class="stat-icon-wrapper stat-icon-purple">
+                    <i class="bi bi-journal-bookmark-fill"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Records -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-title">Records</span>
+                    <h2 class="stat-value stat-count-up" data-target="{{ records_count }}">{{ records_count }}</h2>
+                </div>
+                <div class="stat-icon-wrapper stat-icon-green">
+                    <i class="bi bi-file-earmark-text-fill"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Database -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <span class="stat-title">Database</span>
+                    <h2 class="stat-value" style="font-size: 1.6rem;">{{ database_name }}</h2>
+                </div>
+                <div class="stat-icon-wrapper stat-icon-amber">
+                    <i class="bi bi-database-fill-check"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Search Area -->
+    <div class="content-card">
+        <div class="card-body-custom py-3">
+            <form method="GET" action="{% url 'students:student_list' %}" class="search-form-group">
+                <div class="search-input-group">
+                    <i class="bi bi-search search-input-icon"></i>
+                    <input type="text" name="q" class="form-control search-input" placeholder="Search by name or roll number...">
+                </div>
+                <button type="submit" class="btn-primary-custom" style="white-space: nowrap;">
+                    <i class="bi bi-search"></i>
+                    <span>Search</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Student Records Section (Slide 8 Table Layout) -->
+    <div class="content-card">
+        <div class="card-header-custom">
+            <div class="d-flex align-items-center gap-2">
+                <h3 class="card-header-title mb-0">
+                    <i class="bi bi-table text-primary"></i>
+                    <span>Student Records</span>
+                </h3>
+                <span class="badge-total-count">Total: {{ total_students }}</span>
+            </div>
+            <a href="{% url 'students:student_list' %}" class="btn-secondary-custom" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+                <span>View Full Directory</span>
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        {% if recent_students %}
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Roll No</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Course</th>
+                            <th>Phone</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in recent_students %}
+                            <tr>
+                                <td>
+                                    <span class="badge-roll">{{ student.roll_number }}</span>
+                                </td>
+                                <td>
+                                    <div class="student-identity">
+                                        <div class="student-avatar">
+                                            {{ student.initial }}
+                                        </div>
+                                        <a href="{% url 'students:student_detail' pk=student.pk %}" class="student-name-text">
+                                            {{ student.name }}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-muted">{{ student.email }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge-course">{{ student.course }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-muted font-monospace small">{{ student.phone }}</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center justify-content-end gap-1">
+                                        <a href="{% url 'students:student_edit' pk=student.pk %}" class="btn-action-edit" title="Edit Student">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                        <button type="button" class="btn-action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-student-id="{{ student.pk }}" data-student-name="{{ student.name }}" title="Delete Student">
+                                            <i class="bi bi-trash3"></i> Delete
+                                        </button>
+                                        <a href="{% url 'students:student_detail' pk=student.pk %}" class="btn-action-view" title="View Details">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h4 class="empty-state-title">No students yet</h4>
+                <p class="empty-state-desc">Add your first student record to get started with the system.</p>
+                <a href="{% url 'students:student_add' %}" class="btn-primary-custom">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>+ Add Student</span>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

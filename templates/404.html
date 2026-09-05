@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Not Found • Student Management System{% endblock %}
+{% block page_title %}Page Not Found{% endblock %}
+{% block page_subtitle %}The requested resource could not be found{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6 text-center py-5">
+        <div class="content-card p-5">
+            <div class="empty-state-icon mx-auto mb-3" style="width: 84px; height: 84px; font-size: 2.2rem; background-color: var(--warning-bg); color: var(--warning-text); border-color: var(--warning-border);">
+                <i class="bi bi-question-circle"></i>
+            </div>
+            <h2 class="fw-bold mb-2">404 - Record or Page Not Found</h2>
+            <p class="text-muted mb-4">
+                The student record or page you are trying to access does not exist or has been removed.
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+                <a href="{% url 'students:dashboard' %}" class="btn-primary-custom">
+                    <i class="bi bi-grid-1x2-fill"></i>
+                    <span>Go to Dashboard</span>
+                </a>
+                <a href="{% url 'students:student_list' %}" class="btn-secondary-custom">
+                    <i class="bi bi-people-fill"></i>
+                    <span>View Students</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

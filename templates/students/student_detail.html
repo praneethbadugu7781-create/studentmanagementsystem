@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ student.name }} • Student Profile{% endblock %}
+{% block page_title %}Student Profile{% endblock %}
+{% block page_subtitle %}Detailed record information for {{ student.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-9">
+        <!-- Top Profile Banner Card -->
+        <div class="profile-header-card">
+            <div class="profile-info-group">
+                <div class="student-avatar student-avatar-lg">
+                    {{ student.initial }}
+                </div>
+                <div class="profile-name-area">
+                    <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                        <h2>{{ student.name }}</h2>
+                        <span class="badge-roll">{{ student.roll_number }}</span>
+                    </div>
+                    <span class="badge-course">{{ student.course }}</span>
+                </div>
+            </div>
+
+            <!-- Profile Action Buttons -->
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <a href="{% url 'students:student_list' %}" class="btn-secondary-custom">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Students</span>
+                </a>
+                <a href="{% url 'students:student_edit' pk=student.pk %}" class="btn-primary-custom">
+                    <i class="bi bi-pencil"></i>
+                    <span>Edit Student</span>
+                </a>
+                <button type="button" class="btn-danger-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" data-student-id="{{ student.pk }}" data-student-name="{{ student.name }}">
+                    <i class="bi bi-trash3"></i>
+                    <span>Delete</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Student Detail Information Grid (Strictly 5 Core Student Fields) -->
+        <div class="content-card mb-4">
+            <div class="card-header-custom">
+                <h3 class="card-header-title">
+                    <i class="bi bi-info-circle-fill text-primary"></i>
+                    <span>Academic & Contact Information</span>
+                </h3>
+            </div>
+
+            <div class="card-body-custom">
+                <div class="detail-info-grid">
+                    <!-- Roll Number -->
+                    <div class="detail-item">
+                        <div class="detail-item-label">
+                            <i class="bi bi-card-heading text-primary"></i>
+                            <span>Roll Number</span>
+                        </div>
+                        <div class="detail-item-value font-monospace">
+                            {{ student.roll_number }}
+                        </div>
+                    </div>
+
+                    <!-- Course / Department -->
+                    <div class="detail-item">
+                        <div class="detail-item-label">
+                            <i class="bi bi-journal-bookmark text-primary"></i>
+                            <span>Course / Department</span>
+                        </div>
+                        <div class="detail-item-value">
+                            {{ student.course }}
+                        </div>
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="detail-item">
+                        <div class="detail-item-label">
+                            <i class="bi bi-envelope text-primary"></i>
+                            <span>Email Address</span>
+                        </div>
+                        <div class="detail-item-value">
+                            <a href="mailto:{{ student.email }}" class="text-decoration-none text-dark">
+                                {{ student.email }}
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="detail-item">
+                        <div class="detail-item-label">
+                            <i class="bi bi-telephone text-primary"></i>
+                            <span>Phone Number</span>
+                        </div>
+                        <div class="detail-item-value font-monospace">
+                            <a href="tel:{{ student.phone }}" class="text-decoration-none text-dark">
+                                {{ student.phone }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

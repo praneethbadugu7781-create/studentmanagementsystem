@@ -1,0 +1,123 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    /* Admin Header & Branding */
+    #header {
+        background: #1e40af !important;
+        color: #ffffff !important;
+        padding: 12px 24px !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    #branding h1, #branding h1 a, #site-name a {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 18px !important;
+        text-decoration: none !important;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    #user-tools a {
+        color: #e0e7ff !important;
+        border-bottom-color: rgba(255,255,255,0.4) !important;
+    }
+
+    #user-tools a:hover {
+        color: #ffffff !important;
+    }
+
+    /* Admin Login Box Styling */
+    .login #header {
+        background: #1e40af !important;
+    }
+
+    .login #branding h1 {
+        color: #ffffff !important;
+    }
+
+    .login .submit-row input[type="submit"], input[type="submit"].default, .button.default {
+        background: #2563eb !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 10px 20px !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        transition: background 0.15s ease;
+    }
+
+    .login .submit-row input[type="submit"]:hover, input[type="submit"].default:hover, .button.default:hover {
+        background: #1d4ed8 !important;
+    }
+
+    /* Module Section Headings (AUTHENTICATION, STUDENTS, etc.) */
+    .module caption, 
+    .module caption a, 
+    .module caption th,
+    caption, 
+    caption a,
+    .module h2, 
+    .module h2 a,
+    .inline-group h2 {
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        letter-spacing: 0.04em !important;
+        text-transform: uppercase !important;
+        text-decoration: none !important;
+    }
+
+    .module caption a:hover, 
+    caption a:hover,
+    .module h2 a:hover {
+        color: #eff6ff !important;
+        text-decoration: underline !important;
+    }
+
+    /* Table Headers & Breadcrumbs */
+    div.breadcrumbs {
+        background: #1e40af !important;
+        color: #e0e7ff !important;
+    }
+
+    div.breadcrumbs a {
+        color: #ffffff !important;
+        font-weight: 500 !important;
+    }
+
+    /* Action links (+ Add, Change) */
+    .addlink, .changelink {
+        font-weight: 600 !important;
+    }
+
+    /* Main Dashboard Titles */
+    #content-main h1 {
+        font-size: 1.35rem !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        margin-bottom: 1rem !important;
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+    <a href="{% url 'admin:index' %}">
+        🎓 Student Management System Admin
+    </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<div style="float: right; margin-right: 15px; padding: 6px 0;">
+    <a href="/" target="_blank" style="background: rgba(255,255,255,0.18); color: #ffffff !important; border: 1px solid rgba(255,255,255,0.35); padding: 5px 12px; border-radius: 6px; text-decoration: none !important; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+        ← Open Main Application UI
+    </a>
+</div>
+{% endblock %}

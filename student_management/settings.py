@@ -5,8 +5,10 @@ Production-ready configuration supporting Vercel, Render, PythonAnywhere, Railwa
 
 import os
 import shutil
-from pathlib import Path
-import dj_database_url
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
 from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -79,7 +81,7 @@ WSGI_APPLICATION = 'student_management.wsgi.application'
 # 1. If DATABASE_URL is provided (e.g. Postgres / Supabase / Neon / Render), use it
 # 2. Otherwise default to SQLite (supports serverless /tmp on Vercel and persistent SQLite on Render)
 raw_db_url = os.environ.get('DATABASE_URL', '').strip()
-if raw_db_url:
+if raw_db_url and dj_database_url:
     # Auto-sanitize in case user copied the "psql '...'" snippet directly from Neon / CLI
     if raw_db_url.startswith('psql'):
         raw_db_url = raw_db_url[4:].strip()

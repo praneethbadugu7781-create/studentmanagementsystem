@@ -6,6 +6,7 @@ Production-ready configuration supporting Vercel, Render, PythonAnywhere, Railwa
 import os
 import shutil
 from pathlib import Path
+import dj_database_url
 from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -74,18 +75,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'student_management.wsgi.application'
 
-# Database configuration (supports local, cloud, and serverless /tmp on Vercel)
-if os.environ.get('VERCEL'):
-    DB_PATH = Path('/tmp/db.sqlite3')
-else:
-    DB_PATH = BASE_DIR / 'db.sqlite3'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DB_PATH,
+# Database configuration
+# 1. If DATABASE_URL is provided (e.g. Postgres / Supabase / Neon / Render), use it
+# 2. Otherwise default to SQLite (supports serverless /tmp on Vercel and persistent SQLite on Render)
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    if os.environ.get('VERCEL'):
+        DB_PATH = Path('/tmp/db.sqlite3')
+    else:
+        DB_PATH = BASE_DIR / 'db.sqlite3'
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': DB_PATH,
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

@@ -5,6 +5,7 @@ Production-ready configuration supporting Vercel, Render, PythonAnywhere, Railwa
 
 import os
 import shutil
+from pathlib import Path
 try:
     import dj_database_url
 except ImportError:

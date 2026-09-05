@@ -6,8 +6,12 @@ class Command(BaseCommand):
     help = 'Seeds student records matching the internship project demonstration slides.'
 
     def handle(self, *args, **kwargs):
-        # Reset and seed with presentation sample data
-        Student.objects.all().delete()
+        # Only seed initial sample data if database is currently empty
+        if Student.objects.exists():
+            self.stdout.write(
+                self.style.NOTICE("Database already contains student records. Skipping seed.")
+            )
+            return
         
         sample_students = [
             {

@@ -118,12 +118,12 @@
                     </div>
 
                     <!-- Form Action Buttons (Slide 8 style: Save Student / Cancel) -->
-                    <div class="d-flex align-items-center gap-2 pt-3 border-top">
-                        <button type="submit" class="btn-primary-custom">
+                    <div class="d-flex align-items-center gap-2 pt-3 border-top flex-wrap">
+                        <button type="submit" class="btn-primary-custom flex-fill flex-sm-grow-0 justify-content-center">
                             <i class="bi bi-check2-circle"></i>
                             <span>{{ submit_button_text }}</span>
                         </button>
-                        <a href="{% if is_edit and student %}{% url 'students:student_detail' pk=student.pk %}{% else %}{% url 'students:student_list' %}{% endif %}" class="btn-secondary-custom">
+                        <a href="{% if is_edit and student %}{% url 'students:student_detail' pk=student.pk %}{% else %}{% url 'students:student_list' %}{% endif %}" class="btn-secondary-custom flex-fill flex-sm-grow-0 justify-content-center">
                             Cancel
                         </a>
                     </div>

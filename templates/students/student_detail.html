@@ -23,16 +23,16 @@
             </div>
 
             <!-- Profile Action Buttons -->
-            <div class="d-flex align-items-center gap-2 flex-wrap">
-                <a href="{% url 'students:student_list' %}" class="btn-secondary-custom">
+            <div class="d-flex align-items-center gap-2 flex-wrap w-100 w-sm-auto mt-2 mt-sm-0">
+                <a href="{% url 'students:student_list' %}" class="btn-secondary-custom flex-fill flex-sm-grow-0 justify-content-center">
                     <i class="bi bi-arrow-left"></i>
-                    <span>Back to Students</span>
+                    <span>Back</span>
                 </a>
-                <a href="{% url 'students:student_edit' pk=student.pk %}" class="btn-primary-custom">
+                <a href="{% url 'students:student_edit' pk=student.pk %}" class="btn-primary-custom flex-fill flex-sm-grow-0 justify-content-center">
                     <i class="bi bi-pencil"></i>
-                    <span>Edit Student</span>
+                    <span>Edit</span>
                 </a>
-                <button type="button" class="btn-danger-custom" data-bs-toggle="modal" data-bs-target="#deleteModal" data-student-id="{{ student.pk }}" data-student-name="{{ student.name }}">
+                <button type="button" class="btn-danger-custom flex-fill flex-sm-grow-0 justify-content-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-student-id="{{ student.pk }}" data-student-name="{{ student.name }}">
                     <i class="bi bi-trash3"></i>
                     <span>Delete</span>
                 </button>

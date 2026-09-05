@@ -78,14 +78,35 @@ WSGI_APPLICATION = 'student_management.wsgi.application'
 # Database configuration
 # 1. If DATABASE_URL is provided (e.g. Postgres / Supabase / Neon / Render), use it
 # 2. Otherwise default to SQLite (supports serverless /tmp on Vercel and persistent SQLite on Render)
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
+raw_db_url = os.environ.get('DATABASE_URL', '').strip()
+if raw_db_url:
+    # Auto-sanitize in case user copied the "psql '...'" snippet directly from Neon / CLI
+    if raw_db_url.startswith('psql'):
+        raw_db_url = raw_db_url[4:].strip()
+    raw_db_url = raw_db_url.strip("'\"` ")
+
+    try:
+        db_config = dj_database_url.parse(
+            raw_db_url,
             conn_max_age=600,
             conn_health_checks=True,
+            ssl_require=True,
         )
-    }
+        if 'OPTIONS' in db_config and isinstance(db_config['OPTIONS'], dict):
+            db_config['OPTIONS'].pop('channel_binding', None)
+        DATABASES = {'default': db_config}
+    except Exception as e:
+        print(f"Failed to parse DATABASE_URL ({e}), falling back to SQLite")
+        if os.environ.get('VERCEL'):
+            DB_PATH = Path('/tmp/db.sqlite3')
+        else:
+            DB_PATH = BASE_DIR / 'db.sqlite3'
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': DB_PATH,
+            }
+        }
 else:
     if os.environ.get('VERCEL'):
         DB_PATH = Path('/tmp/db.sqlite3')

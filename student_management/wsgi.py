@@ -29,10 +29,13 @@ if os.environ.get('VERCEL'):
     try:
         from django.core.management import call_command
         call_command('migrate', interactive=False)
-        from students.models import Student
-        if Student.objects.count() == 0:
-            call_command('seed_students', interactive=False)
-    except Exception:
-        pass
+        try:
+            from students.models import Student
+            if Student.objects.count() == 0:
+                call_command('seed_students', interactive=False)
+        except Exception:
+            pass
+    except Exception as e:
+        print(f"Startup migration status: {e}")
 
 app = application

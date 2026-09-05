@@ -10,3 +10,5 @@ ENV/
 .DS_Store
 *.log
 .vercel/
+db.sqlite3
+*.sqlite3

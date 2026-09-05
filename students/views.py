@@ -14,7 +14,9 @@ def dashboard_view(request):
     total_students = Student.objects.count()
     courses_count = Student.objects.values('course').distinct().count() if total_students > 0 else 0
     records_count = total_students
-    database_name = "SQLite"
+    from django.db import connection
+    db_engine = connection.settings_dict.get('ENGINE', '')
+    database_name = "PostgreSQL" if 'postgres' in db_engine else "SQLite"
     
     recent_students = Student.objects.all()[:5]
     

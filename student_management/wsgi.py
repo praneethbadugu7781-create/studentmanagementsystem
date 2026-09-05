@@ -30,6 +30,10 @@ if os.environ.get('VERCEL'):
         from django.core.management import call_command
         call_command('migrate', interactive=False)
         try:
+            call_command('create_admin', interactive=False)
+        except Exception:
+            pass
+        try:
             from students.models import Student
             if Student.objects.count() == 0:
                 call_command('seed_students', interactive=False)

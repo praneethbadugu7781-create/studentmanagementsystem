@@ -61,17 +61,24 @@ class StudentForm(forms.ModelForm):
             }),
             'phone': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Enter phone number (e.g. 9876543210)',
+                'placeholder': 'Enter 10-digit mobile number (e.g. 9876543210)',
                 'autocomplete': 'off',
+                'maxlength': '10',
+                'minlength': '10',
+                'pattern': '[0-9]{10}',
+                'inputmode': 'numeric',
+                'oninput': "this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);",
             }),
         }
 
     def clean_phone(self):
         phone = self.cleaned_data.get('phone', '').strip()
         digits_only = re.sub(r'\D', '', phone)
-        if not digits_only or len(digits_only) < 7 or len(digits_only) > 15:
-            raise forms.ValidationError("Please enter a valid phone number (7 to 15 digits).")
-        return phone
+        if len(digits_only) != 10:
+            raise forms.ValidationError("Phone number must be exactly 10 digits.")
+        if len(phone) != 10 or not phone.isdigit():
+            raise forms.ValidationError("Phone number must contain exactly 10 numeric digits only.")
+        return digits_only
 
     def clean_roll_number(self):
         roll_number = self.cleaned_data.get('roll_number', '').strip().upper()

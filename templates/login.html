@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Login • Student Management System{% endblock %}
+{% block page_title %}Administrator Login{% endblock %}
+{% block page_subtitle %}Sign in to add, edit, and manage student records{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+        <div class="content-card shadow-sm">
+            <div class="card-header-custom bg-white text-center py-4 border-bottom">
+                <div class="w-100">
+                    <div class="stat-icon-wrapper stat-icon-primary mx-auto mb-3" style="width: 52px; height: 52px; font-size: 1.5rem;">
+                        <i class="bi bi-shield-lock-fill"></i>
+                    </div>
+                    <h3 class="card-header-title justify-content-center mb-1">Admin Authentication</h3>
+                    <p class="text-muted small mb-0">Sign in with administrator credentials to manage students</p>
+                </div>
+            </div>
+
+            <div class="card-body-custom p-4">
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger d-flex align-items-center mb-3 py-2 px-3 small" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2"></i>
+                        <div>
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Project Demo Access Box -->
+                <div class="alert alert-primary d-flex align-items-start mb-4 py-2 px-3" style="background-color: var(--primary-light); border: 1px solid var(--primary-border); border-radius: var(--radius-md);">
+                    <i class="bi bi-key-fill text-primary me-2 mt-1"></i>
+                    <div class="small">
+                        <strong>Default Admin Credentials:</strong><br>
+                        Username: <code class="fw-bold text-primary">admin</code> | Password: <code class="fw-bold text-primary">admin123</code>
+                    </div>
+                </div>
+
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
+
+                    <!-- Username Field -->
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label-custom">
+                            <i class="bi bi-person me-1"></i>Username
+                        </label>
+                        <div class="position-relative">
+                            <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" class="form-control" placeholder="Enter username (e.g. admin)" value="{{ form.username.value|default:'' }}">
+                        </div>
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback-custom">
+                                {% for error in form.username.errors %}
+                                    <i class="bi bi-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-4">
+                        <label for="id_password" class="form-label-custom">
+                            <i class="bi bi-lock me-1"></i>Password
+                        </label>
+                        <div class="position-relative">
+                            <input type="password" name="password" autocomplete="current-password" required id="id_password" class="form-control" placeholder="Enter password (e.g. admin123)">
+                        </div>
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback-custom">
+                                {% for error in form.password.errors %}
+                                    <i class="bi bi-exclamation-circle me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Submit & Actions -->
+                    <div class="d-flex flex-column gap-2 pt-2 border-top">
+                        <button type="submit" class="btn-primary-custom w-100 justify-content-center py-2">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            <span>Sign In as Admin</span>
+                        </button>
+                        <a href="{% url 'students:dashboard' %}" class="btn-secondary-custom w-100 justify-content-center py-2">
+                            <i class="bi bi-arrow-left"></i>
+                            <span>Cancel & Return to Dashboard</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

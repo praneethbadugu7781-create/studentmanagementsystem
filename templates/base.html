@@ -243,11 +243,33 @@
                 </a>
 
                 <div class="nav-section-title mt-3">Administration</div>
-                <a href="/admin/" target="_blank" class="sidebar-link">
-                    <i class="bi bi-shield-lock-fill"></i>
-                    <span>Django Admin</span>
-                    <i class="bi bi-box-arrow-up-right ms-auto" style="font-size: 0.75rem;"></i>
-                </a>
+                {% if user.is_authenticated %}
+                    <div class="px-2 py-1 mb-1 d-flex align-items-center gap-2 text-muted" style="font-size: 0.78rem;">
+                        <span class="badge bg-success-subtle text-success border border-success-subtle d-inline-flex align-items-center gap-1">
+                            <i class="bi bi-check-circle-fill"></i> Admin Active
+                        </span>
+                        <strong class="text-dark">{{ user.username }}</strong>
+                    </div>
+                    <a href="/admin/" target="_blank" class="sidebar-link">
+                        <i class="bi bi-shield-lock-fill"></i>
+                        <span>Django Admin</span>
+                        <i class="bi bi-box-arrow-up-right ms-auto" style="font-size: 0.75rem;"></i>
+                    </a>
+                    <a href="{% url 'logout' %}" class="sidebar-link text-danger">
+                        <i class="bi bi-box-arrow-right text-danger"></i>
+                        <span>Logout</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="sidebar-link {% if active_page == 'login' %}active{% endif %}">
+                        <i class="bi bi-shield-lock-fill"></i>
+                        <span>Admin Login</span>
+                    </a>
+                    <a href="/admin/" target="_blank" class="sidebar-link">
+                        <i class="bi bi-shield-lock"></i>
+                        <span>Django Admin</span>
+                        <i class="bi bi-box-arrow-up-right ms-auto" style="font-size: 0.75rem;"></i>
+                    </a>
+                {% endif %}
             </div>
 
             <!-- Internship Project Information Section (From PDF Presentation) -->
@@ -284,10 +306,22 @@
                         <span class="d-none d-sm-inline">Add Student</span>
                         <span class="d-inline d-sm-none">Add</span>
                     </a>
-                    <a href="/admin/" class="admin-badge-btn" target="_blank" title="Open Django Admin">
-                        <i class="bi bi-shield-lock text-primary"></i>
-                        <span class="d-none d-sm-inline">Admin</span>
-                    </a>
+                    {% if user.is_authenticated %}
+                        <div class="d-none d-md-inline-flex align-items-center gap-1 px-2 py-1 bg-light rounded border text-muted small">
+                            <i class="bi bi-person-check-fill text-success"></i>
+                            <span class="fw-semibold text-dark">{{ user.username }}</span>
+                        </div>
+                        <a href="{% url 'logout' %}" class="admin-badge-btn text-danger" title="Logout from Admin">
+                            <i class="bi bi-box-arrow-right text-danger"></i>
+                            <span class="d-none d-sm-inline">Logout</span>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="admin-badge-btn" title="Admin Login">
+                            <i class="bi bi-shield-lock text-primary"></i>
+                            <span class="d-none d-sm-inline">Admin Login</span>
+                            <span class="d-inline d-sm-none">Login</span>
+                        </a>
+                    {% endif %}
                 </div>
             </header>
 
@@ -346,17 +380,30 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body modal-body-custom">
-                    <p class="mb-2">Are you sure you want to delete the record for <strong id="deleteStudentName">this student</strong>?</p>
-                    <p class="text-muted small mb-0">This action cannot be undone and will permanently remove the record from the SQLite database.</p>
+                    {% if user.is_authenticated %}
+                        <p class="mb-2">Are you sure you want to delete the record for <strong id="deleteStudentName">this student</strong>?</p>
+                        <p class="text-muted small mb-0">This action cannot be undone and will permanently remove the record from the database.</p>
+                    {% else %}
+                        <div class="alert alert-warning py-2 px-3 small mb-2">
+                            <i class="bi bi-shield-lock-fill me-1"></i> <strong>Admin Login Required:</strong> Only administrators can delete records.
+                        </div>
+                        <p class="text-muted small mb-0">Please sign in with administrator credentials to delete <strong id="deleteStudentName">this student</strong>.</p>
+                    {% endif %}
                 </div>
                 <div class="modal-footer modal-footer-custom">
                     <button type="button" class="btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
-                    <form id="deleteStudentForm" method="POST" action="">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-danger-custom">
-                            <i class="bi bi-trash3-fill"></i> Delete Student
-                        </button>
-                    </form>
+                    {% if user.is_authenticated %}
+                        <form id="deleteStudentForm" method="POST" action="">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-danger-custom">
+                                <i class="bi bi-trash3-fill"></i> Delete Student
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn-primary-custom">
+                            <i class="bi bi-box-arrow-in-right"></i> Log In as Admin
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

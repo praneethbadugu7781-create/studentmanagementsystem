@@ -1,8 +1,11 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.admin.sites import site
+from django.contrib.auth import get_user_model
 from .models import Student
 from .forms import StudentForm
+
+User = get_user_model()
 
 
 class StudentModelTest(TestCase):
@@ -31,7 +34,7 @@ class StudentFormTest(TestCase):
             'roll_number': '21BCA502',
             'email': 'kavita.singh@example.com',
             'course': 'BCA (Bachelor of Computer Applications)',
-            'phone': '+91 9876543210'
+            'phone': '9876543210'
         }
         form = StudentForm(data=data)
         self.assertTrue(form.is_valid())
@@ -48,13 +51,37 @@ class StudentFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('email', form.errors)
 
-    def test_invalid_phone_form(self):
+    def test_invalid_phone_too_short(self):
         data = {
             'name': 'Kavita Singh',
             'roll_number': '21BCA502',
             'email': 'kavita@example.com',
             'course': 'BCA (Bachelor of Computer Applications)',
-            'phone': '123'  # Too short
+            'phone': '987654321'  # 9 digits - too short
+        }
+        form = StudentForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('phone', form.errors)
+
+    def test_invalid_phone_too_long(self):
+        data = {
+            'name': 'Kavita Singh',
+            'roll_number': '21BCA502',
+            'email': 'kavita@example.com',
+            'course': 'BCA (Bachelor of Computer Applications)',
+            'phone': '98765432100'  # 11 digits - too long
+        }
+        form = StudentForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('phone', form.errors)
+
+    def test_invalid_phone_non_digits(self):
+        data = {
+            'name': 'Kavita Singh',
+            'roll_number': '21BCA502',
+            'email': 'kavita@example.com',
+            'course': 'BCA (Bachelor of Computer Applications)',
+            'phone': '98765ABCD0'  # contains letters
         }
         form = StudentForm(data=data)
         self.assertFalse(form.is_valid())
@@ -83,6 +110,11 @@ class StudentFormTest(TestCase):
 class StudentViewsTest(TestCase):
     def setUp(self):
         self.client = Client()
+        self.admin_user = User.objects.create_superuser(
+            username="admin_test",
+            email="admin@example.com",
+            password="adminpassword123"
+        )
         self.student1 = Student.objects.create(
             name="Alice Wonder",
             roll_number="21BSC001",
@@ -145,12 +177,20 @@ class StudentViewsTest(TestCase):
         response = self.client.get(reverse('students:student_detail', kwargs={'pk': 99999}))
         self.assertEqual(response.status_code, 404)
 
-    def test_student_create_view_get(self):
+    def test_student_create_view_requires_login(self):
+        # Without login, should redirect to login page
+        response = self.client.get(reverse('students:student_add'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/login/', response.url)
+
+    def test_student_create_view_with_admin_login(self):
+        self.client.force_login(self.admin_user)
         response = self.client.get(reverse('students:student_add'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'students/student_form.html')
 
-    def test_student_create_view_post_valid(self):
+    def test_student_create_view_post_valid_authenticated(self):
+        self.client.force_login(self.admin_user)
         data = {
             'name': 'Charlie Chaplin',
             'roll_number': '21BCA003',
@@ -163,7 +203,13 @@ class StudentViewsTest(TestCase):
         self.assertTrue(Student.objects.filter(roll_number='21BCA003').exists())
         self.assertContains(response, "added successfully")
 
-    def test_student_update_view(self):
+    def test_student_update_view_requires_login(self):
+        response = self.client.get(reverse('students:student_edit', kwargs={'pk': self.student1.pk}))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/login/', response.url)
+
+    def test_student_update_view_authenticated(self):
+        self.client.force_login(self.admin_user)
         data = {
             'name': 'Alice Wonder Updated',
             'roll_number': '21BSC001',
@@ -182,7 +228,15 @@ class StudentViewsTest(TestCase):
         self.assertEqual(self.student1.course, "B.Sc (Data Science)")
         self.assertContains(response, "Student record updated successfully.")
 
-    def test_student_delete_view_post(self):
+    def test_student_delete_view_requires_login(self):
+        target_pk = self.student2.pk
+        response = self.client.post(reverse('students:student_delete', kwargs={'pk': target_pk}))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/login/', response.url)
+        self.assertTrue(Student.objects.filter(pk=target_pk).exists())
+
+    def test_student_delete_view_authenticated(self):
+        self.client.force_login(self.admin_user)
         target_pk = self.student2.pk
         response = self.client.post(
             reverse('students:student_delete', kwargs={'pk': target_pk}),
@@ -192,6 +246,28 @@ class StudentViewsTest(TestCase):
         self.assertFalse(Student.objects.filter(pk=target_pk).exists())
         self.assertContains(response, "Student record deleted successfully.")
 
+    def test_admin_login_success(self):
+        response = self.client.post(reverse('login'), {
+            'username': 'admin_test',
+            'password': 'adminpassword123'
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Administrator access active")
+
+    def test_admin_login_failure(self):
+        response = self.client.post(reverse('login'), {
+            'username': 'admin_test',
+            'password': 'wrongpassword'
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Invalid username or password")
+
+    def test_admin_logout(self):
+        self.client.force_login(self.admin_user)
+        response = self.client.get(reverse('logout'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Logged out successfully")
+
 
 class StudentAdminTest(TestCase):
     def test_student_registered_in_admin(self):
@@ -199,3 +275,4 @@ class StudentAdminTest(TestCase):
         admin_instance = site._registry[Student]
         self.assertIn('roll_number', admin_instance.list_display)
         self.assertIn('name', admin_instance.search_fields)
+

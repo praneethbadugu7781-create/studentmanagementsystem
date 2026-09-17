@@ -3,6 +3,9 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from .models import Student
 from .forms import StudentForm
 
@@ -79,9 +82,49 @@ def student_detail_view(request, pk):
     return render(request, 'students/student_detail.html', context)
 
 
+def admin_login_view(request):
+    """
+    Renders login view for administrator authentication.
+    """
+    if request.user.is_authenticated:
+        return redirect('students:dashboard')
+
+    next_url = request.GET.get('next', '') or request.POST.get('next', '')
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f"Welcome back, {user.username}! Administrator access active.")
+            if next_url:
+                return redirect(next_url)
+            return redirect('students:dashboard')
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")
+    else:
+        form = AuthenticationForm()
+
+    context = {
+        'form': form,
+        'next': next_url,
+        'active_page': 'login',
+    }
+    return render(request, 'login.html', context)
+
+
+def admin_logout_view(request):
+    """
+    Logs out administrator and redirects to dashboard.
+    """
+    logout(request)
+    messages.success(request, "Logged out successfully.")
+    return redirect('students:dashboard')
+
+
+@login_required(login_url='login')
 def student_create_view(request):
     """
-    Handles adding a new student record.
+    Handles adding a new student record (Admin only).
     """
     if request.method == 'POST':
         form = StudentForm(request.POST)
@@ -105,9 +148,10 @@ def student_create_view(request):
     return render(request, 'students/student_form.html', context)
 
 
+@login_required(login_url='login')
 def student_update_view(request, pk):
     """
-    Handles updating an existing student record.
+    Handles updating an existing student record (Admin only).
     """
     student = get_object_or_404(Student, pk=pk)
     
@@ -134,10 +178,11 @@ def student_update_view(request, pk):
     return render(request, 'students/student_form.html', context)
 
 
+@login_required(login_url='login')
 @require_http_methods(["POST"])
 def student_delete_view(request, pk):
     """
-    Handles safe deletion of a student record via POST request.
+    Handles safe deletion of a student record via POST request (Admin only).
     """
     student = get_object_or_404(Student, pk=pk)
     student_name = student.name

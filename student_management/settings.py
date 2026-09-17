@@ -169,3 +169,8 @@ MESSAGE_TAGS = {
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Authentication configuration
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'students:dashboard'
+LOGOUT_REDIRECT_URL = 'students:dashboard'

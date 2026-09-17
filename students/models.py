@@ -1,4 +1,10 @@
 from django.db import models
+from django.core.validators import RegexValidator
+
+phone_regex = RegexValidator(
+    regex=r'^\d{10}$',
+    message="Phone number must be exactly 10 digits."
+)
 
 
 class Student(models.Model):
@@ -10,7 +16,7 @@ class Student(models.Model):
     roll_number = models.CharField(max_length=20, unique=True, verbose_name="Roll Number")
     email = models.EmailField(verbose_name="Email Address")
     course = models.CharField(max_length=100, verbose_name="Course")
-    phone = models.CharField(max_length=15, verbose_name="Phone Number")
+    phone = models.CharField(max_length=10, validators=[phone_regex], verbose_name="Phone Number")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
 

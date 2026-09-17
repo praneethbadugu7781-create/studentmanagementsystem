@@ -108,6 +108,9 @@
                             Phone <span class="text-danger">*</span>
                         </label>
                         {{ form.phone }}
+                        <small class="text-muted d-block mt-1" style="font-size: 0.76rem;">
+                            <i class="bi bi-info-circle me-1"></i>Must be exactly 10 digits.
+                        </small>
                         {% if form.phone.errors %}
                             <div class="invalid-feedback-custom">
                                 {% for error in form.phone.errors %}

@@ -1,4 +1,7 @@
 from django.core.management.base import BaseCommand
+from django.contrib.admin.models import LogEntry, ADDITION
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
 from students.models import Student
 
 
@@ -17,7 +20,8 @@ class Command(BaseCommand):
 
         if reset:
             deleted_count, _ = Student.objects.all().delete()
-            self.stdout.write(self.style.WARNING(f"Cleared {deleted_count} existing records."))
+            LogEntry.objects.all().delete()
+            self.stdout.write(self.style.WARNING(f"Cleared {deleted_count} existing records and reset admin action history."))
         elif Student.objects.exists():
             self.stdout.write(
                 self.style.NOTICE("Database already contains student records. Use --reset to replace with 40 fresh students.")
@@ -67,11 +71,28 @@ class Command(BaseCommand):
             {"name": "Kondragunta Sandhya", "roll_number": "24CS040", "email": "sandhya.kondragunta@example.com", "course": "B.Sc (Computer Science)", "phone": "9876543249"},
         ]
 
+        created_students = []
         for data in sample_students:
-            Student.objects.create(**data)
+            student = Student.objects.create(**data)
+            created_students.append(student)
+
+        # Log recent enrollments in admin activity feed
+        admin_user = User.objects.filter(is_superuser=True).first()
+        if admin_user:
+            student_content_type = ContentType.objects.get_for_model(Student)
+            # Add log entries for the first 8 students in clean ascending order
+            for student in created_students[:8]:
+                LogEntry.objects.create(
+                    user=admin_user,
+                    content_type=student_content_type,
+                    object_id=str(student.id),
+                    object_repr=f"{student.roll_number} - {student.name}",
+                    action_flag=ADDITION,
+                    change_message="Enrolled student into B.Sc (Computer Science)"
+                )
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"Successfully seeded {len(sample_students)} student records strictly for B.Sc (Computer Science)."
+                f"Successfully seeded {len(sample_students)} student records strictly for B.Sc (Computer Science) and refreshed admin activity log."
             )
         )

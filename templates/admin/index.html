@@ -6,55 +6,75 @@
 <style>
     /* ========================================================
        PREMIUM HIGH-LEVEL ADMIN DASHBOARD UI
+       Typography: Plus Jakarta Sans / Inter
        ======================================================== */
     .admin-hero-banner {
-        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
-        border-radius: 14px;
-        padding: 24px 28px;
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
+        border-radius: 16px;
+        padding: 28px 32px;
         color: #ffffff;
-        box-shadow: 0 8px 24px -4px rgba(37, 99, 235, 0.25);
-        margin-bottom: 24px;
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.25);
+        margin-bottom: 26px;
         position: relative;
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 20px;
     }
 
     .admin-hero-banner::after {
         content: "";
         position: absolute;
-        top: -60px;
-        right: -60px;
-        width: 220px;
-        height: 220px;
+        top: -50px;
+        right: -50px;
+        width: 240px;
+        height: 240px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.08);
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
         pointer-events: none;
     }
 
-    .admin-hero-title {
-        font-size: 1.5rem;
+    .hero-top-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        color: #e0e7ff;
+        font-size: 0.74rem;
         font-weight: 700;
-        margin: 0 0 6px 0;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        margin-bottom: 10px;
+    }
+
+    .admin-hero-title {
+        font-size: 1.65rem;
+        font-weight: 800;
+        margin: 0 0 8px 0;
         color: #ffffff !important;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.025em;
+        line-height: 1.2;
     }
 
     .admin-hero-subtitle {
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.94rem;
+        color: #cbd5e1;
         margin: 0;
-        max-width: 600px;
-        line-height: 1.4;
+        max-width: 620px;
+        line-height: 1.5;
+        font-weight: 400;
     }
 
     .admin-hero-actions {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         flex-wrap: wrap;
         z-index: 2;
     }
@@ -63,95 +83,123 @@
         background: #ffffff !important;
         color: #1e40af !important;
         font-weight: 700 !important;
-        font-size: 0.88rem !important;
-        padding: 9px 18px !important;
-        border-radius: 8px !important;
+        font-size: 0.9rem !important;
+        padding: 10px 20px !important;
+        border-radius: 10px !important;
         text-decoration: none !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 6px !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+        gap: 8px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
         transition: all 0.15s ease !important;
     }
 
     .hero-action-btn-primary:hover {
         background: #f8fafc !important;
         color: #1d4ed8 !important;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 14px rgba(0,0,0,0.15) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2) !important;
     }
 
     .hero-action-btn-outline {
-        background: rgba(255, 255, 255, 0.16) !important;
+        background: rgba(255, 255, 255, 0.12) !important;
+        backdrop-filter: blur(6px);
         color: #ffffff !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
         font-weight: 600 !important;
-        font-size: 0.88rem !important;
-        padding: 8px 16px !important;
-        border-radius: 8px !important;
+        font-size: 0.9rem !important;
+        padding: 10px 18px !important;
+        border-radius: 10px !important;
         text-decoration: none !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 6px !important;
+        gap: 8px !important;
         transition: all 0.15s ease !important;
     }
 
     .hero-action-btn-outline:hover {
-        background: rgba(255, 255, 255, 0.28) !important;
+        background: rgba(255, 255, 255, 0.24) !important;
         color: #ffffff !important;
+        transform: translateY(-2px);
     }
 
-    /* KPI Stat Grid */
+    /* 4 Live KPI Stat Cards */
     .admin-kpi-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 16px;
-        margin-bottom: 24px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 26px;
+    }
+
+    @media (max-width: 1100px) {
+        .admin-kpi-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .admin-kpi-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
     .admin-kpi-card {
         background: #ffffff;
         border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 18px 20px;
+        border-radius: 14px;
+        padding: 20px 22px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
     }
 
     .admin-kpi-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
-        border-color: var(--primary-border);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.09);
+        border-color: #cbd5e1;
     }
 
     .kpi-card-info h4 {
-        font-size: 0.75rem;
+        font-size: 0.76rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.06em;
         color: var(--text-muted);
-        margin: 0 0 4px 0;
-        font-weight: 600;
+        margin: 0 0 6px 0;
+        font-weight: 700;
     }
 
     .kpi-card-info .kpi-value {
-        font-size: 1.6rem;
-        font-weight: 700;
+        font-size: 1.65rem;
+        font-weight: 800;
         color: var(--text-main);
-        margin: 0;
-        line-height: 1.2;
+        margin: 0 0 6px 0;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
     }
 
+    .kpi-badge-pill {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 9999px;
+    }
+
+    .kpi-badge-blue { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .kpi-badge-purple { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+    .kpi-badge-emerald { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .kpi-badge-amber { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+
     .kpi-icon-box {
-        width: 46px;
-        height: 46px;
-        border-radius: 10px;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.35rem;
+        font-size: 1.4rem;
         flex-shrink: 0;
     }
 
@@ -160,11 +208,12 @@
     .kpi-emerald { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
     .kpi-amber { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
 
-    /* Dashboard Layout Grid */
+    /* Main Two-Column Layout Grid */
     .admin-dashboard-layout {
         display: grid;
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: 1.9fr 1.1fr;
         gap: 24px;
+        align-items: start;
     }
 
     @media (max-width: 1024px) {
@@ -177,15 +226,15 @@
     .mgmt-card {
         background: #ffffff;
         border: 1px solid var(--border-color);
-        border-radius: 12px;
+        border-radius: 14px;
         overflow: hidden;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-        margin-bottom: 20px;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+        margin-bottom: 22px;
     }
 
     .mgmt-card-header {
-        padding: 14px 20px;
-        background: #f8fafc;
+        padding: 16px 22px;
+        background: #ffffff;
         border-bottom: 1px solid var(--border-color);
         display: flex;
         align-items: center;
@@ -193,27 +242,28 @@
     }
 
     .mgmt-card-header h3 {
-        font-size: 0.95rem;
+        font-size: 1rem;
         font-weight: 700;
         color: var(--text-main);
         margin: 0;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
+        letter-spacing: -0.01em;
     }
 
     .mgmt-card-body {
-        padding: 18px 20px;
+        padding: 20px 22px;
     }
 
     .mgmt-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 14px;
+        padding: 16px 18px;
         border: 1px solid var(--border-color);
-        border-radius: 8px;
-        margin-bottom: 10px;
+        border-radius: 10px;
+        margin-bottom: 14px;
         background: #ffffff;
         transition: all 0.15s ease;
     }
@@ -221,6 +271,7 @@
     .mgmt-row:hover {
         background: #f8fafc;
         border-color: #cbd5e1;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
     }
 
     .mgmt-row:last-child {
@@ -228,37 +279,46 @@
     }
 
     .mgmt-title {
-        font-weight: 600;
-        font-size: 0.92rem;
+        font-weight: 700;
+        font-size: 0.96rem;
         color: var(--text-main);
         text-decoration: none;
+        display: inline-block;
+        margin-bottom: 3px;
     }
 
     .mgmt-title:hover {
         color: var(--primary);
     }
 
+    .mgmt-desc {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        line-height: 1.4;
+    }
+
     .mgmt-actions {
         display: flex;
         align-items: center;
         gap: 8px;
+        flex-shrink: 0;
     }
 
     .btn-mgmt-action {
-        padding: 5px 12px;
-        font-size: 0.78rem;
-        font-weight: 600;
-        border-radius: 6px;
+        padding: 7px 14px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        border-radius: 8px;
         text-decoration: none !important;
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: 5px;
         transition: all 0.15s ease;
     }
 
     .btn-mgmt-add {
         background: #eff6ff;
-        color: #2563eb;
+        color: #1d4ed8;
         border: 1px solid #bfdbfe;
     }
 
@@ -269,7 +329,7 @@
 
     .btn-mgmt-change {
         background: #f8fafc;
-        color: #475569;
+        color: #334155;
         border: 1px solid var(--border-color);
     }
 
@@ -278,30 +338,30 @@
         color: #0f172a;
     }
 
-    /* Right Sidebar Feed & Cards */
+    /* Right Sidebar Widgets */
     .sidebar-widget-card {
         background: #ffffff;
         border: 1px solid var(--border-color);
-        border-radius: 12px;
+        border-radius: 14px;
         overflow: hidden;
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-        margin-bottom: 20px;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+        margin-bottom: 22px;
     }
 
     .sidebar-widget-header {
-        padding: 14px 18px;
-        background: #f8fafc;
+        padding: 16px 20px;
+        background: #ffffff;
         border-bottom: 1px solid var(--border-color);
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         font-weight: 700;
         color: var(--text-main);
         display: flex;
         align-items: center;
-        gap: 8px;
+        justify-content: space-between;
     }
 
     .sidebar-widget-body {
-        padding: 16px 18px;
+        padding: 18px 20px;
     }
 
     .activity-feed-list {
@@ -314,9 +374,9 @@
         display: flex;
         align-items: flex-start;
         gap: 12px;
-        padding: 10px 0;
+        padding: 12px 0;
         border-bottom: 1px solid #f1f5f9;
-        font-size: 0.82rem;
+        font-size: 0.86rem;
     }
 
     .activity-item:last-child {
@@ -329,106 +389,130 @@
     }
 
     .activity-badge-add {
-        width: 26px;
-        height: 26px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         background: #ecfdf5;
         color: #059669;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         font-weight: bold;
         flex-shrink: 0;
         border: 1px solid #a7f3d0;
     }
 
     .activity-text-primary {
-        font-weight: 600;
+        font-weight: 700;
         color: var(--text-main);
         margin-bottom: 2px;
+        line-height: 1.3;
     }
 
     .activity-text-secondary {
         color: var(--text-muted);
-        font-size: 0.75rem;
+        font-size: 0.77rem;
     }
 
-    /* Internship Project Info Box */
-    .internship-credit-box {
-        background: #f8fafc;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 12px;
-        font-size: 0.8rem;
+    /* Internship Project Verification Card */
+    .internship-cert-box {
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #2563eb;
+        border-radius: 10px;
+        padding: 16px;
     }
 
-    .internship-student-name {
-        font-weight: 700;
-        color: #0f172a;
-        font-size: 0.88rem;
-        margin-bottom: 2px;
-    }
-
-    .internship-dept {
-        color: #2563eb;
-        font-weight: 600;
-        font-size: 0.76rem;
+    .internship-badge-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
     }
 
     .internship-badge-pill {
         display: inline-block;
         background: #eff6ff;
         color: #1d4ed8;
-        padding: 2px 8px;
+        padding: 3px 10px;
         border-radius: 9999px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        margin: 6px 0;
+        font-size: 0.72rem;
+        font-weight: 700;
         border: 1px solid #bfdbfe;
+        letter-spacing: 0.02em;
     }
 
-    .internship-company {
-        color: #64748b;
-        font-size: 0.75rem;
-        line-height: 1.35;
+    .internship-student-name {
+        font-weight: 800;
+        color: #0f172a;
+        font-size: 0.98rem;
+        margin-bottom: 4px;
+        letter-spacing: -0.01em;
+    }
+
+    .internship-dept {
+        color: #2563eb;
+        font-weight: 600;
+        font-size: 0.82rem;
+        margin-bottom: 10px;
+    }
+
+    .internship-details-list {
+        font-size: 0.78rem;
+        color: #475569;
+        line-height: 1.5;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 10px;
+    }
+
+    .internship-details-list strong {
+        color: #0f172a;
     }
 </style>
 {% endblock %}
 
-{% block coltype %}colMS{% endblock %}
+{# Use colM to prevent Django from inserting a left navigation column #}
+{% block coltype %}colM{% endblock %}
 {% block bodyclass %}{{ block.super }} dashboard{% endblock %}
 {% block breadcrumbs %}{% endblock %}
+
+{# Suppress the orphan raw <h1> title that Django injects above the hero banner #}
+{% block content_title %}{% endblock %}
 
 {% block content %}
 <div id="content-main" style="width: 100%;">
     <!-- Top Hero Banner -->
     <div class="admin-hero-banner">
         <div>
+            <div class="hero-top-badge">
+                Verified Academic Registry • Academic Year 2025–2026
+            </div>
             <h1 class="admin-hero-title">Academic Administration Portal</h1>
             <p class="admin-hero-subtitle">
-                Student Management System • Lineysha and Thevan Software Technologies, Vijayawada
+                Student Record & Enrollment Registry • Lineysha and Thevan Software Technologies, Vijayawada
             </p>
         </div>
         <div class="admin-hero-actions">
             <a href="{% url 'admin:students_student_add' %}" class="hero-action-btn-primary">
-                + Add New Student
+                + Enroll New Student
             </a>
             <a href="{% url 'admin:students_student_changelist' %}" class="hero-action-btn-outline">
-                Manage Directory
+                📋 Directory (40)
             </a>
             <a href="/" target="_blank" class="hero-action-btn-outline">
-                Main Portal ↗
+                🌐 Student Portal ↗
             </a>
         </div>
     </div>
 
-    <!-- 4 KPI Cards -->
+    <!-- 4 Live KPI Cards -->
     <div class="admin-kpi-grid">
         <div class="admin-kpi-card">
             <div class="kpi-card-info">
                 <h4>Total Students</h4>
                 <div class="kpi-value">40</div>
+                <span class="kpi-badge-pill kpi-badge-blue">Class of 2026</span>
             </div>
             <div class="kpi-icon-box kpi-blue">
                 🎓
@@ -437,28 +521,31 @@
 
         <div class="admin-kpi-card">
             <div class="kpi-card-info">
-                <h4>Department</h4>
-                <div class="kpi-value" style="font-size: 1.15rem; line-height: 1.4;">B.Sc (CS)</div>
+                <h4>Academic Program</h4>
+                <div class="kpi-value" style="font-size: 1.25rem;">B.Sc (CS)</div>
+                <span class="kpi-badge-pill kpi-badge-purple">Computer Science</span>
             </div>
             <div class="kpi-icon-box kpi-purple">
-                📚
+                💻
             </div>
         </div>
 
         <div class="admin-kpi-card">
             <div class="kpi-card-info">
                 <h4>Database Engine</h4>
-                <div class="kpi-value" style="font-size: 1.3rem;">SQLite</div>
+                <div class="kpi-value" style="font-size: 1.25rem;">SQLite 3</div>
+                <span class="kpi-badge-pill kpi-badge-emerald">Active & Synced</span>
             </div>
             <div class="kpi-icon-box kpi-emerald">
-                💾
+                ⚡
             </div>
         </div>
 
         <div class="admin-kpi-card">
             <div class="kpi-card-info">
-                <h4>Admin Access</h4>
-                <div class="kpi-value" style="font-size: 1.25rem;">Active</div>
+                <h4>System Access</h4>
+                <div class="kpi-value" style="font-size: 1.25rem;">Admin</div>
+                <span class="kpi-badge-pill kpi-badge-amber">Superuser Mode</span>
             </div>
             <div class="kpi-icon-box kpi-amber">
                 🛡️
@@ -474,21 +561,21 @@
             <div class="mgmt-card">
                 <div class="mgmt-card-header">
                     <h3>🎓 Academic Records Management</h3>
-                    <span style="font-size: 0.75rem; background: #eff6ff; color: #2563eb; font-weight: 700; padding: 3px 8px; border-radius: 999px; border: 1px solid #bfdbfe;">
-                        Primary Model
+                    <span style="font-size: 0.74rem; background: #eff6ff; color: #1d4ed8; font-weight: 700; padding: 4px 10px; border-radius: 999px; border: 1px solid #bfdbfe;">
+                        Core Program
                     </span>
                 </div>
                 <div class="mgmt-card-body">
                     <div class="mgmt-row">
                         <div>
-                            <a href="{% url 'admin:students_student_changelist' %}" class="mgmt-title">Students</a>
-                            <div style="font-size: 0.76rem; color: #64748b; margin-top: 2px;">
-                                Manage 40 student records, roll numbers (24CS001–24CS040), emails, and contacts.
+                            <a href="{% url 'admin:students_student_changelist' %}" class="mgmt-title">Student Directory</a>
+                            <div class="mgmt-desc">
+                                Manage 40 student records, roll numbers (24CS001–24CS040), verified emails, and contact numbers.
                             </div>
                         </div>
                         <div class="mgmt-actions">
                             <a href="{% url 'admin:students_student_add' %}" class="btn-mgmt-action btn-mgmt-add">
-                                + Add
+                                + Add Student
                             </a>
                             <a href="{% url 'admin:students_student_changelist' %}" class="btn-mgmt-action btn-mgmt-change">
                                 View Records
@@ -501,17 +588,17 @@
             <!-- Authentication & Permissions Card -->
             <div class="mgmt-card">
                 <div class="mgmt-card-header">
-                    <h3>🛡️ Authentication & Authorization</h3>
-                    <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; font-weight: 600; padding: 3px 8px; border-radius: 999px;">
-                        Security
+                    <h3>🛡️ Security & User Permissions</h3>
+                    <span style="font-size: 0.74rem; background: #f1f5f9; color: #475569; font-weight: 700; padding: 4px 10px; border-radius: 999px;">
+                        Access Control
                     </span>
                 </div>
                 <div class="mgmt-card-body">
                     <div class="mgmt-row">
                         <div>
-                            <a href="{% url 'admin:auth_user_changelist' %}" class="mgmt-title">Users</a>
-                            <div style="font-size: 0.76rem; color: #64748b; margin-top: 2px;">
-                                Administrator and staff login accounts with permission roles.
+                            <a href="{% url 'admin:auth_user_changelist' %}" class="mgmt-title">Admin Accounts</a>
+                            <div class="mgmt-desc">
+                                Staff logins, superusers, and authentication security.
                             </div>
                         </div>
                         <div class="mgmt-actions">
@@ -526,9 +613,9 @@
 
                     <div class="mgmt-row">
                         <div>
-                            <a href="{% url 'admin:auth_group_changelist' %}" class="mgmt-title">Groups</a>
-                            <div style="font-size: 0.76rem; color: #64748b; margin-top: 2px;">
-                                Role groups and permission sets.
+                            <a href="{% url 'admin:auth_group_changelist' %}" class="mgmt-title">Permission Groups</a>
+                            <div class="mgmt-desc">
+                                Role-based access levels and user permission sets.
                             </div>
                         </div>
                         <div class="mgmt-actions">
@@ -549,7 +636,8 @@
             <!-- Clean Recent Activity Widget -->
             <div class="sidebar-widget-card">
                 <div class="sidebar-widget-header">
-                    ⚡ Recent Academic Activity
+                    <span>⚡ Recent Academic Activity</span>
+                    <span style="font-size: 0.72rem; color: #059669; background: #ecfdf5; padding: 2px 8px; border-radius: 999px; font-weight: 700; border: 1px solid #a7f3d0;">Live Sync</span>
                 </div>
                 <div class="sidebar-widget-body">
                     <ul class="activity-feed-list">
@@ -581,29 +669,29 @@
                             <li class="activity-item">
                                 <span class="activity-badge-add">✓</span>
                                 <div>
-                                    <div class="activity-text-primary">Akkala Naga Sarvani (24CS001)</div>
-                                    <div class="activity-text-secondary">Enrolled in B.Sc (Computer Science)</div>
+                                    <div class="activity-text-primary">Enrolled: 24CS001 - Akkala Naga Sarvani</div>
+                                    <div class="activity-text-secondary">B.Sc (Computer Science) • Logged by admin</div>
                                 </div>
                             </li>
                             <li class="activity-item">
                                 <span class="activity-badge-add">✓</span>
                                 <div>
-                                    <div class="activity-text-primary">Bonda Sai Teja (24CS002)</div>
-                                    <div class="activity-text-secondary">Enrolled in B.Sc (Computer Science)</div>
+                                    <div class="activity-text-primary">Enrolled: 24CS002 - Bonda Sai Teja</div>
+                                    <div class="activity-text-secondary">B.Sc (Computer Science) • Logged by admin</div>
                                 </div>
                             </li>
                             <li class="activity-item">
                                 <span class="activity-badge-add">✓</span>
                                 <div>
-                                    <div class="activity-text-primary">Chunduru Priya (24CS003)</div>
-                                    <div class="activity-text-secondary">Enrolled in B.Sc (Computer Science)</div>
+                                    <div class="activity-text-primary">Enrolled: 24CS003 - Chunduru Priya</div>
+                                    <div class="activity-text-secondary">B.Sc (Computer Science) • Logged by admin</div>
                                 </div>
                             </li>
                             <li class="activity-item">
                                 <span class="activity-badge-add">✓</span>
                                 <div>
-                                    <div class="activity-text-primary">Daggubati Rahul (24CS004)</div>
-                                    <div class="activity-text-secondary">Enrolled in B.Sc (Computer Science)</div>
+                                    <div class="activity-text-primary">Enrolled: 24CS004 - Daggubati Rahul</div>
+                                    <div class="activity-text-secondary">B.Sc (Computer Science) • Logged by admin</div>
                                 </div>
                             </li>
                         {% endif %}
@@ -614,17 +702,22 @@
             <!-- Internship Project Verification Card -->
             <div class="sidebar-widget-card">
                 <div class="sidebar-widget-header">
-                    🎓 Project Information
+                    <span>🎓 Official Project Credentials</span>
+                    <span style="font-size: 0.72rem; color: #2563eb; background: #eff6ff; padding: 2px 8px; border-radius: 999px; font-weight: 700; border: 1px solid #bfdbfe;">Verified</span>
                 </div>
                 <div class="sidebar-widget-body">
-                    <div class="internship-credit-box">
+                    <div class="internship-cert-box">
+                        <div class="internship-badge-header">
+                            <span class="internship-badge-pill">Python Web Internship</span>
+                            <span style="font-size: 0.72rem; color: #64748b; font-weight: 600;">Reg: 24CS001</span>
+                        </div>
                         <div class="internship-student-name">Akkala Naga Sarvani</div>
-                        <div class="internship-dept">B.Sc. Computer Science | Semester II-2</div>
-                        <span class="internship-badge-pill">Python Internship Project</span>
-                        <div class="internship-company">
-                            <strong>Lineysha & Thevan Software Tech</strong><br>
-                            Vijayawada<br>
-                            <span style="color: #94a3b8; font-size: 0.72rem;">15 Apr 2026 – 15 Jun 2026</span>
+                        <div class="internship-dept">B.Sc. Computer Science • Semester II-2</div>
+                        <div class="internship-details-list">
+                            <strong>Organization:</strong> Lineysha & Thevan Software Technologies<br>
+                            <strong>Center:</strong> Vijayawada, Andhra Pradesh<br>
+                            <strong>Internship Tenure:</strong> 15 Apr 2026 – 15 Jun 2026<br>
+                            <strong>Project Title:</strong> Student Management System (Django/Python)
                         </div>
                     </div>
                 </div>

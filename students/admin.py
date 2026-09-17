@@ -5,6 +5,7 @@ from .models import Student
 admin.site.site_header = "Student Management System Admin Portal"
 admin.site.site_title = "Student MS Admin Portal"
 admin.site.index_title = "Lineysha & Thevan Software Technologies • Database Admin"
+admin.site.enable_nav_sidebar = False
 
 
 @admin.register(Student)

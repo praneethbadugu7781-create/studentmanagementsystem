@@ -5,57 +5,118 @@
 {% block extrastyle %}
 {{ block.super }}
 <style>
-    /* Admin Header & Branding */
+    /* =========================================================
+       STUDENT MANAGEMENT SYSTEM - DJANGO ADMIN UI UPGRADE
+       Modern, light corporate aesthetic matching main application
+       ========================================================= */
+    :root {
+        color-scheme: light !important;
+        --primary: #2563eb;
+        --primary-dark: #1e40af;
+        --primary-hover: #1d4ed8;
+        --primary-light: #eff6ff;
+        --primary-border: #bfdbfe;
+        --bg-body: #f8fafc;
+        --bg-surface: #ffffff;
+        --border-color: #e2e8f0;
+        --text-main: #0f172a;
+        --text-body: #334155;
+        --text-muted: #64748b;
+    }
+
+    html, body {
+        background-color: var(--bg-body) !important;
+        color: var(--text-body) !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    }
+
+    /* Header Bar */
     #header {
-        background: #1e40af !important;
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%) !important;
         color: #ffffff !important;
-        padding: 12px 24px !important;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        padding: 14px 28px !important;
+        box-shadow: 0 2px 10px rgba(37, 99, 235, 0.15) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
 
     #branding h1, #branding h1 a, #site-name a {
         color: #ffffff !important;
         font-weight: 700 !important;
-        font-size: 18px !important;
+        font-size: 1.15rem !important;
         text-decoration: none !important;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
+        letter-spacing: -0.01em;
+    }
+
+    #user-tools {
+        font-size: 0.85rem !important;
+        color: #e0e7ff !important;
+    }
+
+    #user-tools strong {
+        color: #ffffff !important;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 2px 8px;
+        border-radius: 4px;
     }
 
     #user-tools a {
-        color: #e0e7ff !important;
-        border-bottom-color: rgba(255,255,255,0.4) !important;
+        color: #f1f5f9 !important;
+        border-bottom: 1px dotted rgba(255, 255, 255, 0.5) !important;
+        font-weight: 500 !important;
+        margin: 0 4px;
     }
 
     #user-tools a:hover {
         color: #ffffff !important;
+        border-bottom-style: solid !important;
     }
 
-    /* Admin Login Box Styling */
-    .login #header {
-        background: #1e40af !important;
+    /* Breadcrumbs Navigation */
+    div.breadcrumbs {
+        background: #1e3a8a !important;
+        color: #cbd5e1 !important;
+        padding: 10px 28px !important;
+        font-size: 0.82rem !important;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08) !important;
     }
 
-    .login #branding h1 {
+    div.breadcrumbs a {
         color: #ffffff !important;
-    }
-
-    .login .submit-row input[type="submit"], input[type="submit"].default, .button.default {
-        background: #2563eb !important;
-        border: none !important;
-        border-radius: 6px !important;
-        padding: 10px 20px !important;
         font-weight: 600 !important;
-        color: #ffffff !important;
-        transition: background 0.15s ease;
+        text-decoration: none !important;
     }
 
-    .login .submit-row input[type="submit"]:hover, input[type="submit"].default:hover, .button.default:hover {
-        background: #1d4ed8 !important;
+    div.breadcrumbs a:hover {
+        text-decoration: underline !important;
     }
 
-    /* Module Section Headings (AUTHENTICATION, STUDENTS, etc.) */
+    /* Content Area & Modules */
+    #content {
+        padding: 24px 28px !important;
+        background-color: var(--bg-body) !important;
+    }
+
+    #content-main h1 {
+        font-size: 1.45rem !important;
+        font-weight: 700 !important;
+        color: var(--text-main) !important;
+        margin-bottom: 1.25rem !important;
+        letter-spacing: -0.02em;
+    }
+
+    .module {
+        background: var(--bg-surface) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+        overflow: hidden !important;
+        margin-bottom: 24px !important;
+    }
+
+    /* Module Section Headings */
     .module caption, 
     .module caption a, 
     .module caption th,
@@ -64,44 +125,161 @@
     .module h2, 
     .module h2 a,
     .inline-group h2 {
-        background: #2563eb !important;
-        color: #ffffff !important;
+        background: #eff6ff !important;
+        color: #1e40af !important;
         font-weight: 700 !important;
-        font-size: 13px !important;
+        font-size: 0.85rem !important;
         letter-spacing: 0.04em !important;
         text-transform: uppercase !important;
-        text-decoration: none !important;
+        padding: 12px 18px !important;
+        border-bottom: 1px solid var(--primary-border) !important;
     }
 
-    .module caption a:hover, 
-    caption a:hover,
-    .module h2 a:hover {
-        color: #eff6ff !important;
-        text-decoration: underline !important;
+    /* Tables (Student Records List) */
+    #result_list, table {
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        width: 100% !important;
+        background-color: #ffffff !important;
     }
 
-    /* Table Headers & Breadcrumbs */
-    div.breadcrumbs {
-        background: #1e40af !important;
-        color: #e0e7ff !important;
-    }
-
-    div.breadcrumbs a {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-
-    /* Action links (+ Add, Change) */
-    .addlink, .changelink {
+    #result_list th, table th {
+        background: #f8fafc !important;
+        color: var(--text-muted) !important;
         font-weight: 600 !important;
+        font-size: 0.78rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.04em !important;
+        padding: 12px 16px !important;
+        border-top: none !important;
+        border-bottom: 1px solid var(--border-color) !important;
     }
 
-    /* Main Dashboard Titles */
-    #content-main h1 {
-        font-size: 1.35rem !important;
+    #result_list td, table td {
+        padding: 12px 16px !important;
+        font-size: 0.88rem !important;
+        color: var(--text-body) !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        vertical-align: middle !important;
+    }
+
+    #result_list tr:hover td, table tr:hover td {
+        background-color: #f8fafc !important;
+    }
+
+    /* Forms, Inputs & Selects */
+    input[type="text"], input[type="password"], input[type="email"], select, textarea {
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        font-size: 0.88rem !important;
+        background: #ffffff !important;
+        color: var(--text-main) !important;
+        transition: all 0.15s ease !important;
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14) !important;
+        outline: none !important;
+    }
+
+    /* Action Buttons */
+    .submit-row {
+        background: #f8fafc !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 10px !important;
+        padding: 14px 18px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    .submit-row input[type="submit"], 
+    input[type="submit"].default, 
+    .button.default,
+    .button {
+        background: var(--primary) !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 9px 18px !important;
+        font-weight: 600 !important;
+        font-size: 0.86rem !important;
+        cursor: pointer !important;
+        box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2) !important;
+        transition: all 0.15s ease !important;
+    }
+
+    .submit-row input[type="submit"]:hover, 
+    input[type="submit"].default:hover, 
+    .button.default:hover {
+        background: var(--primary-hover) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25) !important;
+    }
+
+    .submit-row a.deletelink {
+        background: #fee2e2 !important;
+        color: #991b1b !important;
+        border: 1px solid #fecaca !important;
+        border-radius: 8px !important;
+        padding: 8px 14px !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        transition: background 0.15s ease !important;
+    }
+
+    .submit-row a.deletelink:hover {
+        background: #fecaca !important;
+        color: #7f1d1d !important;
+    }
+
+    /* Change List Filter Sidebar */
+    #changelist-filter {
+        background: #ffffff !important;
+        border-left: 1px solid var(--border-color) !important;
+        border-radius: 0 12px 12px 0 !important;
+    }
+
+    #changelist-filter h2 {
+        background: #f8fafc !important;
+        color: var(--text-main) !important;
         font-weight: 700 !important;
-        color: #0f172a !important;
-        margin-bottom: 1rem !important;
+        font-size: 0.85rem !important;
+        padding: 12px 16px !important;
+        border-bottom: 1px solid var(--border-color) !important;
+    }
+
+    #changelist-filter a {
+        color: var(--text-body) !important;
+    }
+
+    #changelist-filter li.selected a {
+        color: var(--primary) !important;
+        font-weight: 700 !important;
+    }
+
+    /* Login Screen (/admin/login/) */
+    .login {
+        background: var(--bg-body) !important;
+    }
+
+    .login #container {
+        border-radius: 12px !important;
+        border: 1px solid var(--border-color) !important;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
+    }
+
+    .login #header {
+        text-align: center !important;
+        padding: 24px !important;
+    }
+
+    .login #branding h1 {
+        justify-content: center !important;
     }
 </style>
 {% endblock %}
@@ -109,15 +287,15 @@
 {% block branding %}
 <div id="site-name">
     <a href="{% url 'admin:index' %}">
-        🎓 Student Management System Admin
+        🎓 Student Management System • Admin
     </a>
 </div>
 {% endblock %}
 
 {% block nav-global %}
 <div style="float: right; margin-right: 15px; padding: 6px 0;">
-    <a href="/" target="_blank" style="background: rgba(255,255,255,0.18); color: #ffffff !important; border: 1px solid rgba(255,255,255,0.35); padding: 5px 12px; border-radius: 6px; text-decoration: none !important; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
-        ← Open Main Application UI
+    <a href="/" target="_blank" style="background: rgba(255,255,255,0.22); color: #ffffff !important; border: 1px solid rgba(255,255,255,0.4); padding: 6px 14px; border-radius: 8px; text-decoration: none !important; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+        ← View Main Portal
     </a>
 </div>
 {% endblock %}

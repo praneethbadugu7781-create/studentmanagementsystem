@@ -23,7 +23,7 @@ class Student(models.Model):
     class Meta:
         verbose_name = "Student"
         verbose_name_plural = "Students"
-        ordering = ['-created_at']
+        ordering = ['roll_number']
 
     def __str__(self):
         return f"{self.name} ({self.roll_number})"

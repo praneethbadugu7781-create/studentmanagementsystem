@@ -40,7 +40,7 @@
                             <i class="bi bi-person me-1"></i>Username
                         </label>
                         <div class="position-relative">
-                            <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" class="form-control" placeholder="Enter username (e.g. admin)" value="{{ form.username.value|default:'' }}">
+                            <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" class="form-control" placeholder="Enter username" value="{{ form.username.value|default:'' }}">
                         </div>
                         {% if form.username.errors %}
                             <div class="invalid-feedback-custom">
@@ -57,7 +57,7 @@
                             <i class="bi bi-lock me-1"></i>Password
                         </label>
                         <div class="position-relative">
-                            <input type="password" name="password" autocomplete="current-password" required id="id_password" class="form-control" placeholder="Enter password (e.g. admin123)">
+                            <input type="password" name="password" autocomplete="current-password" required id="id_password" class="form-control" placeholder="Enter password">
                         </div>
                         {% if form.password.errors %}
                             <div class="invalid-feedback-custom">

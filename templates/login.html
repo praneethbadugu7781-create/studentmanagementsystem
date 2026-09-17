@@ -30,15 +30,6 @@
                     </div>
                 {% endif %}
 
-                <!-- Project Demo Access Box -->
-                <div class="alert alert-primary d-flex align-items-start mb-4 py-2 px-3" style="background-color: var(--primary-light); border: 1px solid var(--primary-border); border-radius: var(--radius-md);">
-                    <i class="bi bi-key-fill text-primary me-2 mt-1"></i>
-                    <div class="small">
-                        <strong>Default Admin Credentials:</strong><br>
-                        Username: <code class="fw-bold text-primary">admin</code> | Password: <code class="fw-bold text-primary">admin123</code>
-                    </div>
-                </div>
-
                 <form method="POST" action="{% url 'login' %}">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ next }}">

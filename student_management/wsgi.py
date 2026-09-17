@@ -24,6 +24,16 @@ if os.environ.get('VERCEL'):
 
 application = get_wsgi_application()
 
+# Ensure default admin user is initialized if missing
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    if not User.objects.filter(username='admin').exists():
+        from django.core.management import call_command
+        call_command('create_admin', interactive=False)
+except Exception:
+    pass
+
 # If running on Vercel and DB tables need migration fallback
 if os.environ.get('VERCEL'):
     try:
